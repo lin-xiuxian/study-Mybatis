@@ -1,5 +1,6 @@
 package com.lxx.mybatis;
 
+import com.lxx.mybatis.entity.Goods;
 import com.lxx.mybatis.utils.MybatisUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.security.spec.ECField;
 import java.sql.Connection;
+import java.util.List;
 
 public class MyBatisTestor {
     /**
@@ -55,6 +57,20 @@ public class MyBatisTestor {
         } finally{
             MybatisUtils.closeSession(sqlSession);
         }
-
+    }
+    @Test
+    public void testSelectAll(){
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            List<Goods> list =  session.selectList("goods.selectAll");
+            for(Goods g: list){
+                System.out.println(g.getTitle());
+            }
+        } catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
     }
 }
