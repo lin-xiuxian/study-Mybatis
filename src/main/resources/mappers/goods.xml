@@ -6,4 +6,16 @@
     <select id="selectAll" resultType="com.lxx.mybatis.entity.Goods">
         select * from t_goods order by goods_id desc limit 10
     </select>
+    <!-- 单参数传递,使用parameterType指定参数的数据类型即可,SQL中#{value}提取参数-->
+    <select id="selectById" parameterType="Integer" resultType="com.lxx.mybatis.entity.Goods">
+        select * from t_goods where goods_id = #{value}
+    </select>
+    <!-- 多参数传递时,使用parameterType指定Map接口,SQL中#{key}提取参数 -->
+    <select id="selectByPriceRange" parameterType="java.util.Map" resultType="com.lxx.mybatis.entity.Goods">
+        select * from t_goods
+        where
+            current_price between #{min} and #{max}
+        order by current_price
+        limit 0,#{limit}
+    </select>
 </mapper>

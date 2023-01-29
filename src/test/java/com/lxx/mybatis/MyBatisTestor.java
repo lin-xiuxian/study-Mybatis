@@ -10,9 +10,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.security.spec.ECField;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyBatisTestor {
     /**
@@ -68,6 +69,40 @@ public class MyBatisTestor {
                 System.out.println(g.getTitle());
             }
         } catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+    @Test
+    public void testSelectById() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            Goods goods = session.selectOne("goods.selectById", 1603);
+            System.out.println(goods.getTitle());
+        }catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+    @Test
+    public void testSelectByPriceRange() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            Map<String, Integer> param = new HashMap<>();
+            param.put("min", 100);
+            param.put("max", 500);
+            param.put("limit", 10);
+            List<Goods> list = session.selectList("selectByPriceRange", param);
+            for(Goods g: list){
+                System.out.println(g.getTitle() + ":" + g.getCurrentPrice());
+            }
+        }catch(Exception e){
             throw e;
         } finally{
             MybatisUtils.closeSession(session);
