@@ -1,5 +1,6 @@
 package com.lxx.mybatis;
 
+import com.lxx.mybatis.dto.GoodsDTO;
 import com.lxx.mybatis.entity.Goods;
 import com.lxx.mybatis.utils.MybatisUtils;
 import org.apache.ibatis.io.Resources;
@@ -108,4 +109,47 @@ public class MyBatisTestor {
             MybatisUtils.closeSession(session);
         }
     }
+    @Test //demo
+    public void demo() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+
+        } catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+    @Test
+    public void testSelectGoodsMap() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            List<Map> list = session.selectList("goods.selectGoodsMap");
+            for(Map map: list){
+                System.out.println(map);
+            }
+        } catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+     @Test
+    public void testSelectGoodsDTO(){
+         SqlSession session = null;
+         try{
+             session = MybatisUtils.openSession();
+             List<GoodsDTO> list = session.selectList("goods.selectGoodsDTO");
+             for(GoodsDTO g: list){
+                 System.out.println(g.getGoods().getTitle());
+             }
+         } catch(Exception e){
+             throw e;
+         } finally{
+             MybatisUtils.closeSession(session);
+         }
+     }
 }

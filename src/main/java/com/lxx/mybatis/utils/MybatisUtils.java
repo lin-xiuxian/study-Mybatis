@@ -33,7 +33,7 @@ public class MybatisUtils {
     }
     /**
      * 释放一个有效的SqlSession对象
-     * @param session 准备释放SqlSession对象
+     * @param sqlSession 准备释放SqlSession对象
      */
     public static void closeSession(SqlSession sqlSession){
         if(sqlSession != null){
