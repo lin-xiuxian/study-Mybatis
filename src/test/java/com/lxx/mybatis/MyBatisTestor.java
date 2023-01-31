@@ -2,6 +2,7 @@ package com.lxx.mybatis;
 
 import com.lxx.mybatis.dto.GoodsDTO;
 import com.lxx.mybatis.entity.Goods;
+import com.lxx.mybatis.entity.GoodsDetail;
 import com.lxx.mybatis.utils.MybatisUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -325,5 +326,22 @@ public class MyBatisTestor {
             MybatisUtils.closeSession(session);
         }
     }
-
+    /**
+     * 测试多对一对象关联映射
+     * */
+    @Test
+    public void testManyToOne() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            List<GoodsDetail> list = session.selectList("goodsDetail.selectManyToOne");
+            for(GoodsDetail gd: list){
+                System.out.println(gd.getGdPicUrl() + ":" + gd.getGoods().getTitle());
+            }
+        } catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
 }
