@@ -137,7 +137,7 @@ public class MyBatisTestor {
         }
     }
 
-     @Test
+    @Test
     public void testSelectGoodsDTO(){
          SqlSession session = null;
          try{
@@ -151,5 +151,32 @@ public class MyBatisTestor {
          } finally{
              MybatisUtils.closeSession(session);
          }
-     }
+    }
+
+    @Test
+    public void testInsert() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            Goods goods = new Goods();
+            goods.setTitle("测试商品");
+            goods.setSubTitle("测试子标题");
+            goods.setOriginalCost(200f);
+            goods.setCurrentPrice(100f);
+            goods.setDiscount(0.5f);
+            goods.setIsFreeDelivery(1);
+            goods.setCategoryId(43);
+            //insert 返回值代表成功插入的记录总数
+            int num = session.insert("goods.insert", goods);
+            session.commit();
+            System.out.println(goods.getGoodsId());
+        } catch(Exception e){
+            if(session != null){
+                session.rollback();
+            }
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
 }
