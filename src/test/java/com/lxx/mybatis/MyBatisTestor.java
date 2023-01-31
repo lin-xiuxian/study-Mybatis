@@ -109,18 +109,7 @@ public class MyBatisTestor {
             MybatisUtils.closeSession(session);
         }
     }
-    @Test //demo
-    public void demo() throws Exception{
-        SqlSession session = null;
-        try{
-            session = MybatisUtils.openSession();
 
-        } catch(Exception e){
-            throw e;
-        } finally{
-            MybatisUtils.closeSession(session);
-        }
-    }
     @Test
     public void testSelectGoodsMap() throws Exception{
         SqlSession session = null;
@@ -260,6 +249,57 @@ public class MyBatisTestor {
         } catch(Exception e){
             throw e;
         } finally {
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+    @Test
+    public void testLv1Cache() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            Goods goods = session.selectOne("goods.selectById", 1603);
+            Goods goods1 = session.selectOne("goods.selectById", 1603);
+            System.out.println(goods.hashCode() + ":" + goods1.hashCode());
+        }catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+
+        try{
+            session = MybatisUtils.openSession();
+            Goods goods = session.selectOne("goods.selectById", 1603);
+            session.commit();
+            Goods goods1 = session.selectOne("goods.selectById", 1603);
+            System.out.println(goods.hashCode() + ":" + goods1.hashCode());
+        }catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+    @Test
+    public void testLv2Cache() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            Goods goods = session.selectOne("goods.selectById", 1603);
+            System.out.println(goods.hashCode());
+        }catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+
+        try{
+            session = MybatisUtils.openSession();
+            Goods goods = session.selectOne("goods.selectById", 1603);
+            System.out.println(goods.hashCode());
+        }catch(Exception e){
+            throw e;
+        } finally{
             MybatisUtils.closeSession(session);
         }
     }

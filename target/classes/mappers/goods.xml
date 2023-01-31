@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goods">
+    <cache eviction="LRU" flushInterval="600000" size="512" readOnly="true"/>
     <select id="selectAll" resultType="com.lxx.mybatis.entity.Goods">
         select * from t_goods order by goods_id desc limit 10
     </select>
