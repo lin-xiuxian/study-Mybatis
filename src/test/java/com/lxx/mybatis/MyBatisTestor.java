@@ -232,8 +232,8 @@ public class MyBatisTestor {
                select * from t_goods
                 where title = "'' or 1 =1 or title = '【德国】爱他美婴幼儿配方奶粉1段800g*2罐 铂金版'"
             */
-            param.put("title", "'' or 1=1 or title='【德国】爱他美婴幼儿配方奶粉pre段800g*2罐 铂金版'");
-            param.put("order", " order by title desc");
+            param.put("title", "【德国】爱他美婴幼儿配方奶粉pre段800g*2罐 铂金版");
+            param.put("order", "title desc");
             List<Goods> list = session.selectList("goods.selectByTitle", param);
             for(Goods g:list){
                 System.out.println(g.getTitle() + ":" + g.getCurrentPrice());
