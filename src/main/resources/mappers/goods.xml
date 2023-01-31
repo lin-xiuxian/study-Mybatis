@@ -55,4 +55,30 @@
             select last_insert_id();
         </selectKey>-->
     </insert>
+
+    <update id="update" parameterType="com.lxx.mybatis.entity.Goods">
+        update t_goods
+        set
+            title = #{title},
+            sub_title = #{subTitle},
+            original_cost = #{originalCost},
+            current_price = #{currentPrice},
+            discount = #{discount},
+            is_free_delivery = #{isFreeDelivery},
+            category_id = #{categoryId}
+        where
+            goods_id = #{goodsId}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from t_goods where goods_id = #{value}
+    </delete>
+
+    <select id="selectByTitle" parameterType="java.util.Map" resultType="com.lxx.mybatis.entity.Goods">
+        /*#{value} 预编译传值，可以有效防止 sql 注入攻击*/
+        /*${} 文本替换，未经任何处理对 SQL 文本替换，里面的字符串可能会被 被sql执行， 用于复杂场景下的查询
+          ，传入的值尽量是写死的，不能是用户自己输入*/
+        select * from t_goods where title = #{title}
+        ${order}
+    </select>
 </mapper>
