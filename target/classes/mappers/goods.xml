@@ -131,4 +131,8 @@
     <select id="selectOneToMany" resultMap="rmGoods1">
         select * from t_goods limit 0,10
     </select>
+
+    <select id="selectPage" resultType="com.lxx.mybatis.entity.Goods">
+        select * from t_goods where current_price &lt; 1000
+    </select>
 </mapper>

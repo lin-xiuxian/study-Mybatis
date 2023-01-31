@@ -1,5 +1,7 @@
 package com.lxx.mybatis;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.lxx.mybatis.dto.GoodsDTO;
 import com.lxx.mybatis.entity.Goods;
 import com.lxx.mybatis.entity.GoodsDetail;
@@ -337,6 +339,29 @@ public class MyBatisTestor {
             List<GoodsDetail> list = session.selectList("goodsDetail.selectManyToOne");
             for(GoodsDetail gd: list){
                 System.out.println(gd.getGdPicUrl() + ":" + gd.getGoods().getTitle());
+            }
+        } catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+    @Test
+    public void testSelectPage() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            PageHelper.startPage(2,10);
+            Page page = (Page) session.selectList("goods.selectPage");
+            System.out.println("总页数: " + page.getPages());
+            System.out.println("总记录数: " + page.getTotal());
+            System.out.println("开始行号: " + page.getStartRow());
+            System.out.println("结束行号: " + page.getEndRow());
+            System.out.println("当前页码: " + page.getPageNum());
+            List<Goods> data = page.getResult(); //当前页数据
+            for(Goods g: data){
+                System.out.println(g.getTitle());
             }
         } catch(Exception e){
             throw e;

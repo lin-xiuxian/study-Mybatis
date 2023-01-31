@@ -7,6 +7,23 @@
         <!-- 将 goods_id ==> goodsId 进行驼峰命名转换-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
+
+    <!--
+    plugins在配置文件中的位置必须符合要求，否则会报错，顺序如下:
+    properties?, settings?,
+    typeAliases?, typeHandlers?,
+    objectFactory?,objectWrapperFactory?,
+    plugins?,
+    environments?, databaseIdProvider?, mappers?
+    -->
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 使用下面的方式配置参数，后面会有所有的参数介绍 -->
+            <property name="helperDialect" value="mysql"/>
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
     <!--设置默认指向的数据库-->
     <environments default="dev">
         <!--配置环境，不同环境用不同的 id 区分-->
