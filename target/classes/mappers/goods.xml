@@ -3,8 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goods">
+    <!--开启了二级缓存
+        eviction是缓存的清除策略,当缓存对象数量达到上限后,自动触发对应算法对缓存对象清除
+            1.LRU – 最近最久未使用:移除最长时间不被使用的对象。
+                *LSU 最近最少未使用:移除少使用的对象。
+            O1 O2 O3 O4 .. O512
+            14 99 83 1     893
+            2.FIFO – 先进先出:按对象进入缓存的顺序来移除它们。
+            3.SOFT – 软引用:移除基于垃圾收集器状态和软引用规则的对象。
+            4.WEAK – 弱引用:更积极的移除基于垃圾收集器状态和弱引用规则的对象。
+
+            flushInterval 代表间隔多长时间自动清空缓存，单位毫秒，600000毫秒 = 10分钟
+            size 缓存存储上限，用于保存对象或集合（一个集合算一个对象）的数量上限
+            readOnly 设置为 true 代表返回只读缓存，每次从缓存取出的是缓存本身，执行效率高
+                     设置为 false 代表每次取出的是缓存对象的副本，每一次取出的对象都是不同的，这种安全性比较高
+    -->
     <cache eviction="LRU" flushInterval="600000" size="512" readOnly="true"/>
-    <select id="selectAll" resultType="com.lxx.mybatis.entity.Goods">
+    <!--useCache = "false" 表是不使用缓存，当单次查询返回的数据量太大是不推荐使用缓存，因为单次查询返回的大量数据作为一个list集合返回，而一个集合只占size里的一位空间，大量的查询使空间利用率低 -->
+    <select id="selectAll" resultType="com.lxx.mybatis.entity.Goods" useCache="false">
         select * from t_goods order by goods_id desc limit 10
     </select>
     <!-- 单参数传递,使用parameterType指定参数的数据类型即可,SQL中#{value}提取参数-->
@@ -44,11 +60,13 @@
         where g.category_id = c.category_id
     </select>
 
+    <!--flushCache = "true" 表示在指令执行之后立马清空缓存，和commit作用类似，如果为一个查询语句设置此参数，那么这个查询语句执行之后的结果也不会加入缓存 -->
     <insert id="insert"
             parameterType="com.lxx.mybatis.entity.Goods"
             useGeneratedKeys="true"
             keyProperty="goodsId"
             keyColumn="goods_id"
+            flushCache="true"
             >
         insert into t_goods(title, sub_title, original_cost, current_price, discount, is_free_delivery, category_id)
         values (#{title}, #{subTitle}, #{originalCost}, #{currentPrice}, #{discount}, #{isFreeDelivery}, #{categoryId})
@@ -92,5 +110,25 @@
                 and current_price &lt; #{currentPrice}
             </if>
         </where>
+    </select>
+
+    <!--
+        resultMap可用于说明一对多或者多对一的映射逻辑
+        id 是resultMap属性引用的标志
+        type 指向One的实体(Goods)
+    -->
+    <resultMap id="rmGoods1" type="com.lxx.mybatis.entity.Goods">
+        <!-- 映射goods对象的主键到goods_id字段 -->
+        <id property="goodsId" column="goods_id"></id>
+        <!--
+            collection的含义是,在
+            select * from t_goods limit 0,1 得到结果后,对所有Goods对象遍历得到goods_id字段值,
+            并代入到goodsDetail命名空间的findByGoodsId的SQL中执行查询,
+            将得到的"商品详情"集合赋值给goodsDetails List对象.
+        -->
+        <collection property="goodsDetails" select="goodsDetail.selectByGoodsId" column="goods_id"/>
+    </resultMap>
+    <select id="selectOneToMany" resultMap="rmGoods1">
+        select * from t_goods limit 0,10
     </select>
 </mapper>

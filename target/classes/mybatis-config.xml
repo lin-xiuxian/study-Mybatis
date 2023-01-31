@@ -21,21 +21,10 @@
                 <property name="password" value="root"/>
             </dataSource>
         </environment>
-
-        <environment id="prd">
-            <!-- 采用 JDBC 方式对数据库事务进行 commit / rollback -->
-            <transactionManager type="JDBC"></transactionManager>
-            <!-- 采用数据库连接池方式管理数据库连接 -->
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/babytun?userUnicode=true&amp;characterEncoding=UTF-8"/>
-                <property name="username" value="root"/>
-                <property name="password" value="root"/>
-            </dataSource>
-        </environment>
     </environments>
 
     <mappers>
         <mapper resource="mappers/goods.xml" />
+        <mapper resource="mappers/goodsDetail.xml"/>
     </mappers>
 </configuration>

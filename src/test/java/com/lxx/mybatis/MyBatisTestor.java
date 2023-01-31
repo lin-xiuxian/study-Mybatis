@@ -303,4 +303,27 @@ public class MyBatisTestor {
             MybatisUtils.closeSession(session);
         }
     }
+    /**
+     *  一对多对象关联查询
+     *  @throw Exception
+     */
+    @Test
+    public void testOneToMany() throws Exception{
+        SqlSession session = null;
+        try{
+            session = MybatisUtils.openSession();
+            List<Goods> list = session.selectList("goods.selectOneToMany");
+            for(Goods g:list){
+                System.out.println(g.getTitle() + ":" + g.getGoodsDetails().size());
+            }
+        } catch(Exception e){
+            if(session != null){
+                System.out.println("失败");
+            }
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
 }
