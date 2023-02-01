@@ -11,15 +11,6 @@ public class Goods {
     private Float discount; //折扣率
     private Integer isFreeDelivery; //是否包邮
     private Integer categoryId; //分类编号
-    private List<GoodsDetail> goodsDetails;
-
-    public List<GoodsDetail> getGoodsDetails() {
-        return goodsDetails;
-    }
-
-    public void setGoodsDetails(List<GoodsDetail> goodsDetails) {
-        this.goodsDetails = goodsDetails;
-    }
 
     public Integer getGoodsId() {
         return goodsId;

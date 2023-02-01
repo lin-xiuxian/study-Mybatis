@@ -43,9 +43,8 @@
             </dataSource>
         </environment>
     </environments>
-
     <mappers>
-        <mapper resource="mappers/goods.xml" />
-        <mapper resource="mappers/goodsDetail.xml"/>
+        <!--<mapper class="com.lxx.mybatis.dao.GoodsDAO"/>-->
+        <package name="com.lxx.mybatis.dao"/>
     </mappers>
 </configuration>

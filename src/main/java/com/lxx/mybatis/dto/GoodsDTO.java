@@ -1,35 +1,32 @@
 package com.lxx.mybatis.dto;
 
-import com.lxx.mybatis.entity.Category;
-import com.lxx.mybatis.entity.Goods;
-
 
 public class GoodsDTO {
-    private Goods goods = new Goods();
-    private Category category = new Category();
-    private String test;
+    private Integer goodsId;
+    private String title;
+    private Float currentPrice;
 
-    public Goods getGoods() {
-        return goods;
+    public Integer getGoodsId() {
+        return goodsId;
     }
 
-    public void setGoods(Goods goods) {
-        this.goods = goods;
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getTitle() {
+        return title;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getTest() {
-        return test;
+    public Float getCurrentPrice() {
+        return currentPrice;
     }
 
-    public void setTest(String test) {
-        this.test = test;
+    public void setCurrentPrice(Float currentPrice) {
+        this.currentPrice = currentPrice;
     }
 }
