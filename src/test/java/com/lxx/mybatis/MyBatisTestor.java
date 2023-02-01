@@ -15,9 +15,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MyBatisTestor {
     /**
@@ -364,6 +362,63 @@ public class MyBatisTestor {
                 System.out.println(g.getTitle());
             }
         } catch(Exception e){
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+    @Test
+    public void testBatchInsert() throws Exception{
+        SqlSession session = null;
+        try{
+            long st = new Date().getTime();
+            session = MybatisUtils.openSession();
+            List list = new ArrayList();
+            for(int i = 0; i < 500; i++){
+                Goods goods = new Goods();
+                goods.setTitle("测试商品");
+                goods.setSubTitle("测试子标题");
+                goods.setOriginalCost(200f);
+                goods.setCurrentPrice(100f);
+                goods.setDiscount(0.5f);
+                goods.setIsFreeDelivery(1);
+                goods.setCategoryId(43);
+
+                list.add(goods);
+            }
+            session.insert("goods.batchInsert", list);
+            session.commit();
+            long et = new Date().getTime();
+            System.out.println("执行时间: " + (et - st) + " 毫秒");
+        } catch(Exception e){
+            if(session != null){
+                session.rollback();
+            }
+            throw e;
+        } finally{
+            MybatisUtils.closeSession(session);
+        }
+    }
+
+    @Test
+    public void testBatchDelete() throws Exception{
+        SqlSession session = null;
+        try{
+            long st = new Date().getTime();
+            session = MybatisUtils.openSession();
+            List list = new ArrayList();
+            for(int i = 2674; i <= 3181; i++){
+                list.add(i);
+            }
+            session.delete("goods.batchDelete", list);
+            session.commit();
+            long et = new Date().getTime();
+            System.out.println("执行时间: " + (et - st) + " 毫秒");
+        } catch(Exception e){
+            if(session != null){
+                session.rollback();
+            }
             throw e;
         } finally{
             MybatisUtils.closeSession(session);
