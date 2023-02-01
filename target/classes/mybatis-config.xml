@@ -31,11 +31,15 @@
             <!-- 采用 JDBC 方式对数据库事务进行 commit / rollback -->
             <transactionManager type="JDBC"></transactionManager>
             <!-- 采用数据库连接池方式管理数据库连接 -->
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/babytun?userUnicode=true&amp;characterEncoding=UTF-8"/>
-                <property name="username" value="root"/>
+            <!-- <dataSource type="POOLED">-->
+            <dataSource type="com.lxx.mybatis.datasource.C3P0DataSourceFactory">
+                <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/babytun?userUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="user" value="root"/>
                 <property name="password" value="root"/>
+                <property name="initialPoolSize" value="5"/>
+                <property name="maxPoolSize" value="20"/>
+                <property name="minPoolSize" value="5"/>
             </dataSource>
         </environment>
     </environments>
